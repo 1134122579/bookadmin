@@ -22,69 +22,38 @@
             end-placeholder="结束日期"
           />
         </el-form-item>
-        <el-form-item label="所属分类:">
-          <el-select
-            v-model="listQuery.class_id"
-            filterable
+        <el-form-item label="座位编号:">
+          <el-input
+            v-model="listQuery.table_no"
             clearable
-            placeholder="请选择所属分类"
-          >
-            <el-option
-              v-for="item in ClassOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
+            placeholder="请输入座位编号"
+            class="filter-item"
+            @keyup.enter.native="handleFilter"
+          />
         </el-form-item>
-        <el-form-item label="所属书架:">
-          <el-select
-            v-model="listQuery.shelf"
-            filterable
-            clearable
-            placeholder="请选择所属书架"
+        <el-form-item label="书籍状态:">
+          <el-radio-group
+            v-model="listQuery.status"
+            size="mini"
+            @change="selectStatus()"
           >
-            <el-option
-              v-for="item in ShelfOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
+            <!-- 状态：1 为 上架，2 下架 出库 3为 下架-->
+            <el-radio-button label>全部</el-radio-button>
+            <el-radio-button :label="1">启用</el-radio-button>
+            <el-radio-button :label="2">停用</el-radio-button>
+          </el-radio-group>
         </el-form-item>
-        <div>
-          <el-form-item label="图书名称:">
-            <el-input
-              v-model="listQuery.book_name"
-              clearable
-              placeholder="请输入图书名称"
-              class="filter-item"
-              @keyup.enter.native="handleFilter"
-            />
-          </el-form-item>
-          <el-form-item label="书籍状态:">
-            <el-radio-group
-              v-model="listQuery.status"
-              size="mini"
-              @change="selectStatus()"
-            >
-              <!-- 状态：1 为 上架，2 下架 出库 3为 下架-->
-              <el-radio-button label>全部</el-radio-button>
-              <el-radio-button :label="1">上架</el-radio-button>
-              <el-radio-button :label="2">下架</el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              v-waves
-              size="mini"
-              class="filter-item search"
-              type="success"
-              icon="el-icon-upload"
-              @click="handleAdd"
-              >录入书籍</el-button
-            >
-            <el-button
+        <el-form-item>
+          <el-button
+            v-waves
+            size="mini"
+            class="filter-item search"
+            type="success"
+            icon="el-icon-upload"
+            @click="handleAdd"
+            >添加座位编码</el-button
+          >
+          <!-- <el-button
               v-waves
               size="mini"
               class="filter-item search"
@@ -92,18 +61,17 @@
               icon="el-icon-arrow-down"
               @click="handleAllSetStatus()"
               >批量下架</el-button
-            >
-            <el-button
-              v-waves
-              size="mini"
-              class="filter-item search"
-              type="primary"
-              icon="el-icon-search"
-              @click="handleFilter"
-              >搜索</el-button
-            >
-          </el-form-item>
-        </div>
+            > -->
+          <el-button
+            v-waves
+            size="mini"
+            class="filter-item search"
+            type="primary"
+            icon="el-icon-search"
+            @click="handleFilter"
+            >搜索</el-button
+          >
+        </el-form-item>
       </el-form>
     </el-card>
     <!-- 列表 -->
@@ -118,7 +86,6 @@
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center" />
         <el-table-column
           label="编号"
           align="center"
@@ -129,85 +96,26 @@
             <span>{{ row.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="图书信息" align="center" fixed="left">
-          <template slot-scope="{ row }">
-            <el-popover trigger="hover" placement="top" class="itme_box">
-              <p>
-                <span class="textStyle">书籍书名: {{ row.book_name }}</span>
-              </p>
-              <p>
-                <span class="textStyle">书籍作者: {{ row.author }}</span>
-              </p>
-              <p>
-                <span class="textStyle">书籍编码: {{ row.book_code }}</span>
-              </p>
-              <p>
-                <span class="textStyle">内部编号: {{ row.book_no }}</span>
-              </p>
-              <div slot="reference" style="color:#1890FF">
-                {{ row.book_name }}
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="封面" align="center">
+        <el-table-column label="封面" align="center" min-width="130">
           <template slot-scope="{ row }">
             <el-image
               style="height:80px"
               fit="cover"
-              :src="row.cover + '?imageView2/1/w/200/h/200'"
-              :preview-src-list="[row.cover]"
+              :src="row.mini_code"
+              :preview-src-list="[row.mini_code]"
             ></el-image>
           </template>
         </el-table-column>
 
         <el-table-column
-          label="所属分类"
+          sortable
+          label="桌号"
           align="center"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.class_name }}</span>
-          </template>
-        </el-table-column>
+          min-width="60"
+          prop="table_no"
+        />
         <el-table-column
-          label="所属书架"
-          align="center"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.shelf_name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="售卖价格"
-          align="center"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.sale_price }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="租借费用"
-          align="center"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.unit_price }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="推荐指数" align="center" min-width="180">
-          <template slot-scope="{ row }">
-            <el-rate
-              v-model="row.stars"
-              disabled
-              text-color="#ff9900"
-            ></el-rate>
-          </template>
-        </el-table-column>
-        <el-table-column
+          sortable
           label="状态"
           align="center"
           :show-overflow-tooltip="true"
@@ -217,42 +125,6 @@
             <el-tag :type="row.status | typeFilter">{{
               row.status | statusFilter
             }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="库存"
-          align="center"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.stock_num }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="点赞数"
-          align="center"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.like_num }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="浏览数"
-          align="center"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.pv_num }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="收藏数"
-          align="center"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.collect_num }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -267,14 +139,14 @@
         </el-table-column>
         <el-table-column label="操作" align="center" min-width="120">
           <template slot-scope="{ row }">
-            <el-button type="primary" size="mini" @click="handleEdit(row)"
+            <!-- <el-button type="primary" size="mini" @click="handleEdit(row)"
               >编辑</el-button
-            >
+            > -->
             <el-button
               size="mini"
               :type="row.status == 1 ? 'danger' : 'success'"
               @click="handleModifyStatus(row.id, row.status, row.class_id)"
-              >{{ row.status == 1 ? "下架" : "上架" }}</el-button
+              >{{ row.status == 1 ? "停用" : "启用" }}</el-button
             >
           </template>
         </el-table-column>
@@ -289,7 +161,7 @@
     />
     <!-- 导入地点 -->
     <el-dialog
-      title="书籍信息"
+      title="添加座位"
       :visible.sync="dialogFormVisible"
       center
       top="10vh"
@@ -302,117 +174,25 @@
         label-width="90px"
         :rules="rules"
       >
-        <el-form-item label="图书封面:" label-position="right" prop="cover">
-          <el-upload
-            class="avatar-uploader"
-            :action="action"
-            name="file"
-            accept="image/*"
-            :on-success="handleAvatarSuccess"
-            :show-file-list="false"
-          >
-            <el-image class="avatar" :src="form.cover" v-if="form.cover" />
-            <i class="el-icon-plus avatar-uploader-icon" v-else></i>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="书名:" prop="book_name">
-          <el-input
-            v-model="form.book_name"
-            placeholder="请输入输入书名"
-            class="filter-item"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item label="作者:" prop="author">
-          <el-input
+        <el-form-item label="座位编号:" prop="table_no">
+          <el-input-number
+            v-model.number="form.table_no"
+            :min="1"
+            label="座位编号"
+          ></el-input-number>
+          <!-- <el-input
             v-model="form.author"
-            placeholder="请输入输入书名"
+            placeholder="请输入座位编号"
             class="filter-item"
             clearable
-          />
+          /> -->
         </el-form-item>
-
-        <el-form-item label="图书编号:" prop="book_code">
-          <el-input
-            v-model="form.book_code"
-            placeholder="请输入输入图书编号"
-            class="filter-item"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item label="内部编码:" prop="book_no">
-          <el-input
-            v-model="form.book_no"
-            placeholder="请输入输入内部编码"
-            class="filter-item"
-            clearable
-          />
-        </el-form-item>
-
-        <el-form-item label="售卖价格:" prop="sale_price">
-          <el-input-number
-            v-model="form.sale_price"
-            controls-position="right"
-            :min="1"
-            :max="10000"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="租用费用:" prop="unit_price">
-          <el-input-number
-            v-model="form.unit_price"
-            controls-position="right"
-            :min="1"
-            :max="10000"
-          ></el-input-number>
-        </el-form-item>
-
-        <el-form-item label="所属分类:" prop="class_id">
-          <el-select
-            v-model="form.class_id"
-            filterable
-            placeholder="请选择所属分类"
-          >
-            <el-option
-              v-for="item in ClassOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属书架:" prop="shelf">
-          <el-select
-            v-model="form.shelf"
-            filterable
-            placeholder="请选择所属书架"
-          >
-            <el-option
-              v-for="item in ShelfOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="推荐指数:" prop="stars">
-          <div class="ratestyle">
-            <el-rate v-model="form.stars"></el-rate>
-          </div>
-        </el-form-item>
-        <el-form-item label="展示状态:" prop="status">
+        <!-- <el-form-item label="展示状态:" prop="status">
           <el-radio-group v-model="form.status" size="mini">
-            <!-- 状态：1 为 上架，2 下架 出库 3为 下架-->
             <el-radio-button :label="1">上架</el-radio-button>
             <el-radio-button :label="2">下架</el-radio-button>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="是否推荐:" prop="is_tui">
-          <el-radio-group v-model="form.is_tui" size="mini">
-            <!-- 状态：1 为 上架，2 下架 出库 3为 下架-->
-            <el-radio-button :label="1">是</el-radio-button>
-            <el-radio-button :label="2">否</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -423,12 +203,12 @@
 </template>
 <script>
 import {
-  getBook,
+  getTableList,
   getSelectBookClass,
   delBook,
-  editbookstatus,
+  setTableStatus,
   editBook,
-  addBook,
+  addTable,
   setAllbookStatus,
   getBookSelectShelf
 } from "@/api/book";
@@ -436,7 +216,7 @@ import waves from "@/directive/waves"; // waves directive 123
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 export default {
-  name: "getBook",
+  name: "getTableList",
   components: {
     Pagination
   },
@@ -447,8 +227,8 @@ export default {
     // 状态订单状态 1 已支付 2 未支付 3 已退款 4 退款失败  5 待审批 6审批失败 7待退款
     statusFilter(status) {
       const statusMap = {
-        1: "上架",
-        2: "下架"
+        1: "启用",
+        2: "停用"
       };
       return statusMap[status];
     },
@@ -466,7 +246,9 @@ export default {
       rules: {
         cover: [{ required: true, message: "请上传封面", trigger: "change" }],
         book_name: [{ required: true, message: "请填写书名", trigger: "blur" }],
-        author: [{ required: true, message: "请填写作者", trigger: "blur" }],
+        table_no: [
+          { required: true, message: "请填写书桌编号", trigger: "blur" }
+        ],
         book_code: [
           { required: true, message: "请填写图书编号", trigger: "blur" }
         ],
@@ -507,14 +289,17 @@ export default {
       listQuery: {
         page: 1,
         pageSize: 10,
+        table_no: "",
         status: "",
         tags: "",
         querydate: ""
       },
       form: {
+        status: 1,
         author: "",
         book_code: "",
         book_name: "",
+        table_no: "",
         book_no: "",
         class_name: "",
         cover: "",
@@ -581,7 +366,7 @@ export default {
         if (valid) {
           switch (this.formType) {
             case 1:
-              addBook(this.form).then(res => {
+              addTable(this.form).then(res => {
                 this.$message({
                   message: "提交成功",
                   type: "success"
@@ -618,7 +403,7 @@ export default {
     handleModifyStatus(id, status, class_id) {
       const userstatus = status == 1 ? 2 : 1;
       const data = { status: userstatus, id: id, class_id: class_id };
-      editbookstatus(data).then(() => {
+      setTableStatus(data).then(() => {
         this.$notify({
           title: "Success",
           message: "操作成功",
@@ -682,7 +467,7 @@ export default {
     // 获取地点列表
     getList() {
       this.listLoading = true;
-      getBook(this.listQuery).then(response => {
+      getTableList(this.listQuery).then(response => {
         this.listLoading = false;
         let list = response.data.result;
         this.list = list.map(item => {

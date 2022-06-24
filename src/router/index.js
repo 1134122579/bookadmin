@@ -111,10 +111,10 @@ export const constantRoutes = [
     children: [
       {
         path: "seatList",
-        component: () => import("@/views/book/list"),
+        component: () => import("@/views/seat/list"),
         name: "seatList",
         meta: {
-          title: "座位列表",
+          title: "座位管理",
           icon: "list"
         }
       }
