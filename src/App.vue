@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view />
-    <audio class="audio" src="@/assets/order.mp3" ref="audio"></audio>
+    <audio class="audio" controls src="@/assets/order.mp3" ref="audio"></audio>
   </div>
 </template>
 
@@ -14,7 +14,6 @@ export default {
   methods: {
     // 创建socket
     WebSocketinit() {
-   
       let that = this;
       if ("WebSocket" in window) {
         // 打开一个 web socket
@@ -28,7 +27,6 @@ export default {
           received_msg = JSON.parse(received_msg);
           if (received_msg.type == "msg") {
             console.log(received_msg);
-            this.$refs["audio"].paly();
             that.$notify({
               title: "订单提示",
               message: `${received_msg.msg}`,
@@ -36,6 +34,8 @@ export default {
               type: "success",
               duration: 0
             });
+
+            that.$refs["audio"].paly();
           }
         };
         this.ws.onclose = function() {
@@ -53,6 +53,8 @@ export default {
 <style lang="scss" scoped>
 .audio {
   position: absolute;
-  top: 9999px;
+  // top: 9999px;
+  top: 10px;
+  z-index: 99996;
 }
 </style>

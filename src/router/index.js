@@ -121,6 +121,27 @@ export const constantRoutes = [
     ]
   },
   {
+    path: "/comment",
+    component: Layout,
+    redirect: "/comment",
+    name: "comment",
+    meta: {
+      title: "评论管理",
+      icon: "book"
+    },
+    children: [
+      {
+        path: "commentList",
+        component: () => import("@/views/comment/list"),
+        name: "bookList",
+        meta: {
+          title: "图书评论列表",
+          icon: "list"
+        }
+      }
+    ]
+  },
+  {
     path: "/book",
     component: Layout,
     redirect: "/book",

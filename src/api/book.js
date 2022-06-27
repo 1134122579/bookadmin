@@ -40,10 +40,24 @@ export function editBook(data) {
     data
   });
 }
+export function delComment(data) {
+  return request({
+    url: "delComment",
+    method: "post",
+    data
+  });
+}
 // 修改状态
 export function editbookstatus(data) {
   return request({
     url: "editbookstatus",
+    method: "post",
+    data
+  });
+}
+export function getBookCommentList(data) {
+  return request({
+    url: "getBookCommentList",
     method: "post",
     data
   });
