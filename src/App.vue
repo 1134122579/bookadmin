@@ -1,7 +1,15 @@
 <template>
   <div id="app">
     <router-view />
-    <audio class="audio" controls src="@/assets/order.mp3" ref="audio"></audio>
+    <audio
+      class="audio"
+      id="audio"
+      preload="auto"
+      controls
+      src="@/assets/order.mp3"
+      ref="audio"
+      hidden="true"
+    ></audio>
   </div>
 </template>
 
@@ -12,6 +20,15 @@ export default {
     this.WebSocketinit();
   },
   methods: {
+    pnplay() {
+      // let mp3 = new Audio("@/assets/order.mp3");
+      // mp3.play(); //播放
+      // // mp3.pause(); //暂
+      // var audio = document.getElementById("audio");
+      // console.log(this.$refs);
+      // console.log(audio);
+      // audio.play();
+    },
     // 创建socket
     WebSocketinit() {
       let that = this;
@@ -35,7 +52,7 @@ export default {
               duration: 0
             });
 
-            that.$refs["audio"].paly();
+            that.$refs["audio"].play();
           }
         };
         this.ws.onclose = function() {
@@ -53,8 +70,8 @@ export default {
 <style lang="scss" scoped>
 .audio {
   position: absolute;
-  // top: 9999px;
-  top: 10px;
+  top: 9999px;
+  //   top: 10px;
   z-index: 99996;
 }
 </style>

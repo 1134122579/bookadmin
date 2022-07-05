@@ -2,7 +2,12 @@
   <div class="app-container">
     <!-- 搜索 -->
     <el-card>
-      <el-form :inline="true" :model="listQuery" label-width="80px" class="demo-form-inline">
+      <el-form
+        :inline="true"
+        :model="listQuery"
+        label-width="80px"
+        class="demo-form-inline"
+      >
         <el-form-item label="订单编号:">
           <el-input
             v-model="listQuery.order_no"
@@ -41,7 +46,11 @@
         </el-form-item>
         <div>
           <el-form-item label="订单状态:">
-            <el-radio-group v-model="listQuery.status" size="mini" @change="selectStatus()">
+            <el-radio-group
+              v-model="listQuery.status"
+              size="mini"
+              @change="selectStatus()"
+            >
               <!-- 订单状态 1 归还（已归还） 2 待送书（待送书）  3 待还书(借书中)-->
               <el-radio-button label>全部</el-radio-button>
               <el-radio-button :label="1">已归还</el-radio-button>
@@ -50,7 +59,11 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="支付方式:">
-            <el-radio-group v-model="listQuery.pay_type" size="mini" @change="payTypeSelect()">
+            <el-radio-group
+              v-model="listQuery.pay_type"
+              size="mini"
+              @change="payTypeSelect()"
+            >
               <!-- 1 小程序支付 2 余额支付 3其他方式支付-->
               <el-radio-button label>全部</el-radio-button>
               <el-radio-button :label="1">余额支付</el-radio-button>
@@ -65,7 +78,8 @@
               type="primary"
               icon="el-icon-search"
               @click="handleFilter"
-            >搜索</el-button>
+              >搜索</el-button
+            >
             <el-button
               v-waves
               size="mini"
@@ -73,7 +87,8 @@
               type="success"
               icon="el-icon-download"
               @click="excelDown"
-            >导出订单</el-button>
+              >导出订单</el-button
+            >
           </el-form-item>
         </div>
       </el-form>
@@ -89,13 +104,26 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column label="编号" align="center" type="index" width="50"></el-table-column>
-        <el-table-column label="头像" align="center" :show-overflow-tooltip="true">
+        <el-table-column
+          label="编号"
+          align="center"
+          type="index"
+          width="50"
+        ></el-table-column>
+        <el-table-column
+          label="头像"
+          align="center"
+          :show-overflow-tooltip="true"
+        >
           <template slot-scope="{ row }">
             <el-avatar size="large" :src="row.headimgurl"></el-avatar>
           </template>
         </el-table-column>
-        <el-table-column label="姓名/手机号" align="center" :show-overflow-tooltip="true">
+        <el-table-column
+          label="姓名/手机号"
+          align="center"
+          :show-overflow-tooltip="true"
+        >
           <template slot-scope="{ row }">
             <div>{{ row.name }}</div>
             <div>{{ row.mobile }}</div>
@@ -105,26 +133,23 @@
           <template slot-scope="{ row }">
             <el-popover trigger="hover" placement="top" class="itme_box">
               <p>
-                <span class="textStyle">书籍书名: {{row.book_name}}</span>
+                <span class="textStyle">书籍书名: {{ row.book_name }}</span>
               </p>
               <p>
-                <span class="textStyle">书籍作者: {{row.author}}</span>
-                {{ row.bid_price }}
+                <span class="textStyle">书籍作者: {{ row.author }}</span>
               </p>
               <p>
                 <span class="textStyle">所在书架: {{ row.shelf_name }}</span>
               </p>
               <p>
-                <span class="textStyle">书籍编码: {{row.book_code}}</span>
-                {{ row.ifbunit }}
+                <span class="textStyle">书籍编码: {{ row.book_code }}</span>
               </p>
               <p>
-                <span class="textStyle">内部编号: {{row.book_no}}</span>
-                {{ row.book_no }}
+                <span class="textStyle">内部编号: {{ row.book_no }}</span>
               </p>
               <div slot="reference" style="color:#1890FF">
-              <div>{{row.shelf_name}}</div>
-              <div> {{row.book_name}}</div>
+                <div>{{ row.shelf_name }}</div>
+                <div>{{ row.book_name }}</div>
               </div>
             </el-popover>
           </template>
@@ -139,17 +164,32 @@
             <span>{{ row.order_no }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" :show-overflow-tooltip="true" min-width="60">
+        <el-table-column
+          label="状态"
+          align="center"
+          :show-overflow-tooltip="true"
+          min-width="60"
+        >
           <template slot-scope="{ row }">
-            <el-tag :type="row.status | typeFilter">{{ row.status | statusFilter }}</el-tag>
+            <el-tag :type="row.status | typeFilter">{{
+              row.status | statusFilter
+            }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="订单金额" align="center" :show-overflow-tooltip="true">
+        <el-table-column
+          label="订单金额"
+          align="center"
+          :show-overflow-tooltip="true"
+        >
           <template slot-scope="{ row }">
             <span>{{ row.price }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="支付方式" align="center" :show-overflow-tooltip="true">
+        <el-table-column
+          label="支付方式"
+          align="center"
+          :show-overflow-tooltip="true"
+        >
           <template slot-scope="{ row }">
             <span>{{ row.pay_type | payTypeFilter() }}</span>
           </template>
@@ -160,20 +200,33 @@
             <span>{{ row.create_time }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作人" :show-overflow-tooltip="true" align="center">
+        <el-table-column
+          label="操作人"
+          :show-overflow-tooltip="true"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <span>{{ row.op }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="备注" align="center" :show-overflow-tooltip="true" min-width="120">
+        <el-table-column
+          label="备注"
+          align="center"
+          :show-overflow-tooltip="true"
+          min-width="120"
+        >
           <template slot-scope="{ row }">
             <span>{{ row.remark }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" min-width="120">
           <template slot-scope="{ row }">
-            <el-button type="primary" size="mini" @click="handleEdit(row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="handleReturn(row)">退款</el-button>
+            <el-button type="primary" size="mini" @click="handleEdit(row)"
+              >编辑</el-button
+            >
+            <el-button size="mini" type="danger" @click="handleReturn(row)"
+              >退款</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -186,7 +239,13 @@
       @pagination="getList"
     />
     <!-- 导入地点 -->
-    <el-dialog title="订单备注" :visible.sync="dialogFormVisible" center top="5vh" width="35%">
+    <el-dialog
+      title="订单备注"
+      :visible.sync="dialogFormVisible"
+      center
+      top="5vh"
+      width="35%"
+    >
       <el-form :model="form" label-width="100px" ref="formName" :rules="rules">
         <el-form-item label="订单编号:" prop="name">
           <span>{{ form.order_no }}</span>
@@ -210,14 +269,18 @@
   </div>
 </template>
 <script>
-import { getQueueOrderList, returnUnitOrder, setOrderRemark } from '@/api/order'
+import {
+  getQueueOrderList,
+  returnUnitOrder,
+  setOrderRemark
+} from "@/api/order";
 // import { exportTicketOrder } from "@/api/count";
-import waves from '@/directive/waves' // waves directive 123
-import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import ItemVue from '@/layout/components/Sidebar/Item.vue'
+import waves from "@/directive/waves"; // waves directive 123
+import { parseTime } from "@/utils";
+import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+import ItemVue from "@/layout/components/Sidebar/Item.vue";
 export default {
-  name: 'getQueueOrderList',
+  name: "getQueueOrderList",
   components: {
     Pagination
   },
@@ -228,29 +291,29 @@ export default {
     // 状态订单状态 订单状态 1 归还（已归还） 2 待送书（待送书）  3 待还书(借书中)
     statusFilter(status) {
       const statusMap = {
-        1: '已归还',
-        2: '待送书',
-        3: '待还书'
-      }
-      return statusMap[status]
+        1: "已归还",
+        2: "待送书",
+        3: "待还书"
+      };
+      return statusMap[status];
     },
 
     // 状态颜色
     typeFilter(status) {
       const statusMap = {
-        1: 'success',
-        2: 'warning',
-        3: 'danger'
-      }
-      return statusMap[status]
+        1: "success",
+        2: "warning",
+        3: "danger"
+      };
+      return statusMap[status];
     },
     // 1 小程序支付 2 余额支付 3其他方式支付
     payTypeFilter(pay_type) {
       const payTypeMap = {
-        1: '余额支付',
-        2: '会员抵扣'
-      }
-      return payTypeMap[pay_type]
+        1: "余额支付",
+        2: "会员抵扣"
+      };
+      return payTypeMap[pay_type];
     }
   },
 
@@ -258,80 +321,80 @@ export default {
     return {
       rules: {
         title: [
-          { required: true, message: '请输入地点名称', trigger: 'change' }
+          { required: true, message: "请输入地点名称", trigger: "change" }
         ],
-        address: [{ required: true, message: '请输入地点', trigger: 'change' }],
+        address: [{ required: true, message: "请输入地点", trigger: "change" }],
         // tump: [{ required: true, message: "请上传缩略图", trigger: "change" }],
         class_id: [
-          { required: true, message: '请选择所属分类', trigger: 'change' }
+          { required: true, message: "请选择所属分类", trigger: "change" }
         ],
-        status: [{ required: true, message: '请选择状态', trigger: 'change' }],
+        status: [{ required: true, message: "请选择状态", trigger: "change" }],
         lng: [
-          { required: true, message: '请输入地点经度lng', trigger: 'change' }
+          { required: true, message: "请输入地点经度lng", trigger: "change" }
         ],
         lat: [
-          { required: true, message: '请输入地点纬度lat', trigger: 'change' }
+          { required: true, message: "请输入地点纬度lat", trigger: "change" }
         ]
       },
       downloading: false,
       tableKey: 0,
       list: null,
       total: 0,
-      date: '',
+      date: "",
       listLoading: false,
       table: true,
-      status: '全部',
-      orderInfo: '',
-      disabled: 'false',
+      status: "全部",
+      orderInfo: "",
+      disabled: "false",
       listQuery: {
         page: 1,
         pageSize: 10,
-        order_no: '',
+        order_no: "",
         status: 2,
-        pay_type: '',
-        querydate: '',
-        userinfo: ''
+        pay_type: "",
+        querydate: "",
+        userinfo: ""
       },
       form: {}, //
       dialogFormVisible: false
-    }
+    };
   },
   watch: {},
   created() {
-    this.getList()
+    this.getList();
   },
   methods: {
     // 导出
     excelDown() {
       const loading = this.$loading({
         lock: true,
-        text: '下载中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
+        text: "下载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       const payTypeMap = {
-        1: '公众号',
-        2: '小程序',
-        3: '免费赠送'
-      }
+        1: "公众号",
+        2: "小程序",
+        3: "免费赠送"
+      };
       const statusMap = {
-        1: '已支付',
-        2: '待支付',
-        3: '已进入',
-        4: '已退款',
-        5: '订单异常'
-      }
+        1: "已支付",
+        2: "待支付",
+        3: "已进入",
+        4: "已退款",
+        5: "订单异常"
+      };
       exportTicketOrder(this.listQuery).then(res => {
-        let list = res.data
-        import('@/vendor/Export2Excel').then(excel => {
+        let list = res.data;
+        import("@/vendor/Export2Excel").then(excel => {
           const tHeader = [
-            '编号',
-            '订单号',
-            '支付金额',
-            '支付时间',
-            '支付方式',
-            '状态'
-          ]
+            "编号",
+            "订单号",
+            "支付金额",
+            "支付时间",
+            "支付方式",
+            "状态"
+          ];
           let data = list.map(item => {
             return [
               item.id,
@@ -340,42 +403,42 @@ export default {
               item.pay_time,
               payTypeMap[item.pay_type],
               statusMap[item.status]
-            ]
-          })
+            ];
+          });
           excel.export_json_to_excel({
             header: tHeader, //表头 必填
             data, //具体数据 必填
-            filename: '门票订单', //非必填
+            filename: "门票订单", //非必填
             autoWidth: true, //非必填
-            bookType: 'csv' //非必填
-          })
-          loading.close()
-        })
-        console.log(res)
-      })
+            bookType: "csv" //非必填
+          });
+          loading.close();
+        });
+        console.log(res);
+      });
     },
     //提交订单备注
     submitProData() {
       setOrderRemark(this.form).then(res => {
         this.$message({
-          message: '提交成功',
-          type: 'success'
-        })
-        this.getList()
-        this.dialogFormVisible = false
-      })
+          message: "提交成功",
+          type: "success"
+        });
+        this.getList();
+        this.dialogFormVisible = false;
+      });
     },
     //弹出导入地点表单
     handleEdit(row) {
-      this.form = JSON.parse(JSON.stringify(row))
-      this.dialogFormVisible = true
+      this.form = JSON.parse(JSON.stringify(row));
+      this.dialogFormVisible = true;
     },
     // 删除订单
     handleReturn(row) {
-      this.$confirm('此操作将退款订单信息此操作比较敏感, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+      this.$confirm("此操作将退款订单信息此操作比较敏感, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
       })
         .then(() => {
           returnUnitOrder({
@@ -384,43 +447,43 @@ export default {
             price: row.price
           }).then(response => {
             this.$message({
-              type: 'success',
-              message: '操作成功!'
-            })
-            this.getList()
-          })
+              type: "success",
+              message: "操作成功!"
+            });
+            this.getList();
+          });
         })
         .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消操作'
-          })
-        })
+            type: "info",
+            message: "已取消操作"
+          });
+        });
     },
     // 筛选地点状态
     selectStatus() {
-      this.getList()
+      this.getList();
     },
     // 筛选支付方式
     payTypeSelect() {
-      this.getList()
+      this.getList();
     },
     // 获取地点列表
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
       getQueueOrderList(this.listQuery).then(response => {
-        this.listLoading = false
-        this.list = response.data.result
-        this.orderInfo = response.data.orderInfo
-        this.total = response.data.pageInfo.total
-      })
+        this.listLoading = false;
+        this.list = response.data.result;
+        this.orderInfo = response.data.orderInfo;
+        this.total = response.data.pageInfo.total;
+      });
     },
     //筛选过滤
     handleFilter() {
-      this.getList()
+      this.getList();
     }
   }
-}
+};
 </script>
 <style>
 .demonstration {
