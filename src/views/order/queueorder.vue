@@ -55,7 +55,8 @@
               <el-radio-button label>全部</el-radio-button>
               <el-radio-button :label="1">已归还</el-radio-button>
               <el-radio-button :label="2">待送书</el-radio-button>
-              <el-radio-button :label="3">待还书</el-radio-button>
+              <el-radio-button :label="3">送书中</el-radio-button>
+              <el-radio-button :label="4">待还书</el-radio-button>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="支付方式:">
@@ -293,7 +294,8 @@ export default {
       const statusMap = {
         1: "已归还",
         2: "待送书",
-        3: "待还书"
+        3: "送书中",
+        4: "待还书"
       };
       return statusMap[status];
     },
@@ -303,7 +305,8 @@ export default {
       const statusMap = {
         1: "success",
         2: "warning",
-        3: "danger"
+        3: "info",
+        4: "danger"
       };
       return statusMap[status];
     },
