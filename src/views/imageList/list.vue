@@ -5,7 +5,7 @@
         <div v-for="(item, index) in list" :key="index" class="blockimage">
           <el-image
             style="width:100%; height: 200px"
-            :preview-src-list="imglist"
+            :preview-src-list="[item.url]"
             fit="cover"
             :src="item.url + '?imageView2/2/w/400'"
           >
