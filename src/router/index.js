@@ -135,7 +135,7 @@ export const constantRoutes = [
         component: () => import("@/views/comment/list"),
         name: "bookList",
         meta: {
-          title: "图书评论列表",
+          title: "图书评论",
           icon: "list"
         }
       }
@@ -176,6 +176,27 @@ export const constantRoutes = [
         meta: {
           title: "图书书架",
           icon: "shujia"
+        }
+      }
+    ]
+  },
+  {
+    path: "/imagelist",
+    component: Layout,
+    redirect: "/imagelist",
+    name: "book",
+    meta: {
+      title: "打卡管理",
+      icon: "book"
+    },
+    children: [
+      {
+        path: "imagelist",
+        component: () => import("@/views/imageList/list"),
+        name: "bookList",
+        meta: {
+          title: "打卡列表",
+          icon: "list"
         }
       }
     ]
@@ -307,7 +328,7 @@ const createRouter = () =>
     scrollBehavior: () => ({
       y: 0
     }),
-    // base: "/bookadmin", // 加上这一行 测试环境不要加
+    base: "/bookadmin", // 加上这一行 测试环境不要加
     routes: constantRoutes
   });
 

@@ -176,3 +176,10 @@ export function getBookSelectShelf() {
     method: "get"
   });
 }
+export function getImgList(data) {
+  return request({
+    url: "getImgList",
+    method: "post",
+    data
+  });
+}
