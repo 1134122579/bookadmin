@@ -1,5 +1,48 @@
 <template>
   <div>
+    <el-card style="margin:20px">
+      <el-form
+        :inline="true"
+        :model="listQuery"
+        label-width="80px"
+        size="mini"
+        class="demo-form-inline"
+      >
+        <el-form-item label="上传日期:">
+          <el-date-picker
+            v-model="listQuery.querydate"
+            clearable
+            value-format="yyyy-MM-dd"
+            unlink-panels
+            type="daterange"
+            class="filter-item"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+        </el-form-item>
+        <el-form-item label="图书名称:">
+          <el-input
+            v-model="listQuery.userinfo"
+            clearable
+            placeholder="请输入图书名称"
+            class="filter-item"
+            @keyup.enter.native="handleFilter"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            v-waves
+            size="mini"
+            class="filter-item search"
+            type="primary"
+            icon="el-icon-search"
+            @click="handleFilter"
+            >搜索</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-card>
     <el-card style="margin:20px" v-loading="listLoading" class="">
       <div class="imagelist">
         <div v-for="(item, index) in list" :key="index" class="blockimage">
@@ -14,6 +57,12 @@
             </div>
           </el-image>
           <div class="button">
+            <el-avatar :src="item.headimgurl"></el-avatar>
+            <div class="userinfo">
+              <p class="name">{{ item.name }}</p>
+              <p>{{ item.mobile }}</p>
+              <p>{{ item.create_time }}</p>
+            </div>
             <el-button
               type="success"
               icon="el-icon-download"
@@ -58,6 +107,8 @@ export default {
       list: [],
       imglist: [],
       listQuery: {
+        userinfo: "",
+        querydate: "",
         page: 1,
         pageSize: 20
       }
@@ -67,6 +118,10 @@ export default {
     this.getList();
   },
   methods: {
+    //筛选过滤
+    handleFilter() {
+      this.getList();
+    },
     download(imgUrl) {
       const a = document.createElement("a");
       // 这里是将url转成blob地址，
@@ -111,14 +166,24 @@ export default {
     margin-bottom: 10px;
     margin-right: 10px;
     .button {
-      position: absolute;
-      bottom: 0;
+      // position: absolute;
       width: 100%;
-      // background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.1);
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      .userinfo {
+        line-height: 1.2;
+        .name {
+          font-weight: 600;
+        }
+        p {
+          margin: 0;
+          text-align: center;
+        }
+      }
     }
   }
 }
