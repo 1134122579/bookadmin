@@ -292,8 +292,11 @@
       title="书籍信息"
       :visible.sync="dialogFormVisible"
       center
-      top="10vh"
-      width="32%"
+      @close="onClose"
+      :destroy-on-close="true"
+      top="5vh"
+      :close-on-click-modal="false"
+      width="34%"
     >
       <el-form
         :model="form"
@@ -317,16 +320,18 @@
         </el-form-item>
         <el-form-item label="书名:" prop="book_name">
           <el-input
-            v-model="form.book_name"
+            v-model.trim="form.book_name"
             placeholder="请输入输入书名"
             class="filter-item"
             clearable
+            @blur="checkBookIsExist(form.book_name)"
           />
+          <div style="color:#F7BA2A">*自动查询是否有相同书籍</div>
         </el-form-item>
         <el-form-item label="作者:" prop="author">
           <el-input
             v-model="form.author"
-            placeholder="请输入输入书名"
+            placeholder="请输入输入作者"
             class="filter-item"
             clearable
           />
@@ -430,6 +435,7 @@ import {
   editBook,
   addBook,
   setAllbookStatus,
+  checkBookIsExist,
   getBookSelectShelf
 } from "@/api/book";
 import waves from "@/directive/waves"; // waves directive 123
@@ -528,7 +534,24 @@ export default {
       dialogAddFormVisible: false
     };
   },
-  watch: {},
+  watch: {
+    dialogFormVisible(newValue) {
+      if (!newValue) {
+        // this.form = {
+        //   author: "",
+        //   book_code: "",
+        //   book_name: "",
+        //   book_no: "",
+        //   class_name: "",
+        //   cover: "",
+        //   sale_price: "",
+        //   unit_price: "",
+        //   is_tui: "",
+        //   desc: ""
+        // };
+      }
+    }
+  },
   created() {
     this.getList();
     // 获取书籍分类
@@ -540,6 +563,16 @@ export default {
     });
   },
   methods: {
+    // 查询书籍
+    checkBookIsExist(book_name) {
+      if (!book_name) {
+        return;
+      }
+      checkBookIsExist({ book_name }).then(res => {
+        console.log(res);
+        this.form = res.data;
+      });
+    },
     // 选择的需要删除的记录
     handleSelectionChange(val) {
       this.multipleSelection = [];
@@ -587,8 +620,21 @@ export default {
                   type: "success"
                 });
                 this.getList();
+
                 this.$refs["fromdata"].resetFields();
                 this.dialogFormVisible = false;
+                this.form = {
+                  author: "",
+                  book_code: "",
+                  book_name: "",
+                  book_no: "",
+                  class_name: "",
+                  cover: "",
+                  sale_price: "",
+                  unit_price: "",
+                  is_tui: "",
+                  desc: ""
+                };
               });
               break;
             case 2:
@@ -600,6 +646,18 @@ export default {
                 this.getList();
                 this.$refs["fromdata"].resetFields();
                 this.dialogFormVisible = false;
+                this.form = {
+                  author: "",
+                  book_code: "",
+                  book_name: "",
+                  book_no: "",
+                  class_name: "",
+                  cover: "",
+                  sale_price: "",
+                  unit_price: "",
+                  is_tui: "",
+                  desc: ""
+                };
               });
               break;
           }
@@ -608,6 +666,22 @@ export default {
           return false;
         }
       });
+    },
+    onClose() {
+      this.form = {
+        author: "",
+        book_code: "",
+        book_name: "",
+        book_no: "",
+        class_name: "",
+        cover: "",
+        sale_price: "",
+        unit_price: "",
+        is_tui: "",
+        desc: ""
+      };
+      this.$refs["fromdata"].resetFields();
+      // done
     },
     // 上传封面成功
     handleAvatarSuccess(res) {

@@ -16,6 +16,20 @@ export function addBook(data) {
     data
   });
 }
+export function checkBookIsExist(data) {
+  return request({
+    url: "checkBookIsExist",
+    method: "post",
+    data
+  });
+}
+export function getSelectBookClass(data) {
+  return request({
+    url: "getSelectBookClass",
+    method: "get",
+    data
+  });
+}
 // 删除书籍
 export function delBook(data) {
   return request({

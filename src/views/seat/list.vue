@@ -6,6 +6,7 @@
         :inline="true"
         :model="listQuery"
         label-width="80px"
+        size="mini"
         class="demo-form-inline"
       >
         <el-form-item label="创建日期:">
